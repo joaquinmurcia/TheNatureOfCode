@@ -1,47 +1,35 @@
-class Fish{
+class Fish extends Animal{
 
-  PVector location;
-  PVector speed;
-  PVector acceleration;
-  PVector mouse;
-  PVector dir;
-  float mod;
-  float lim;
+  float ax,ay;
 
-  float ax;
-  float ay;
-
-  Fish(){
-      location = new PVector(random(width/2,width),random(height/2,height));
-      speed = new PVector(0,0);
+  Fish(float des, float m, float x, float y){
+      super(des,m,3,x,y,new PVector(0,0),new PVector(0,0));
 
       ax = random(0,100);
       ay = random(10000,11000);
-
-      lim = 3;
   }
 
-  void update(){
+  Fish(float des, float m){
+      super(des,m,3,random(width/2,width),random(height/2,height),new PVector(0,0),new PVector(0,0));
+
+      ax = random(0,100);
+      ay = random(10000,11000);
+  }
+
+  void updateFish(ArrayList<PVector> forces){
       //acceleration = PVector.random2D();
-      acceleration = new PVector(map(noise(ax),0,1,-1,1),map(noise(ay),0,1,-1,1));
-      acceleration.normalize();
-      acceleration.mult(0.1);
+      PVector acc = new PVector(map(noise(ax),0,1,-1,1),map(noise(ay),0,1,-1,1));
+      acc.normalize();
+      acc.mult(0.1);
 
       ax += 0.01;
       ay += 0.01;
 
-      /*mouse = new PVector(mouseX,mouseY);
-      dir = PVector.sub(mouse,location);
+      applyForce(acc);
 
-      mod = dir.mag();
-      dir.normalize();
-      dir.div(mod/20);
-
-      acceleration = dir;*/
-
-      speed.add(acceleration);
-      speed.limit(lim);
-      location.add(speed);
+      for(int i = 0; i < forces.size();i++){
+        applyForce(forces.get(i));
+      }
   }
 
   void display(){
@@ -52,20 +40,21 @@ class Fish{
 
   void checkEdges() {
 
-    //[full] When it reaches one edge, set location to the other.
-    //[full] When it reaches one edge, set location to the other.
     if (location.x > width) {
-      location.x = 0;
-    } else if (location.x < 0) {
       location.x = width;
+      velocity.x *= -1;
+    } else if (location.x < width/2) {
+      velocity.x *= -1;
+      location.x = width/2;
     }
 
     if (location.y > height) {
-      location.y = 0;
-    } else if (location.y < 0) {
+      velocity.y *= -1;
       location.y = height;
+    }else if (location.y < height/2) {
+      velocity.y *= -1;
+      location.y = height/2;
     }
-    //[end]
 
   }
 

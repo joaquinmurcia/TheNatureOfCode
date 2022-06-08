@@ -45,4 +45,26 @@ abstract class Animal extends Entity{
       }
 
     }
+
+    boolean isInside(Liquid l) {
+      if (location.x>l.x && location.x<l.x+l.w && location.y>l.y && location.y<l.y+l.h)
+      {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    void drag(Liquid l) {
+      float speed = velocity.mag();
+      float dragMagnitude = l.c * speed * speed;
+
+      PVector drag = velocity.get();
+      drag.mult(-1);
+      drag.normalize();
+
+      drag.mult(dragMagnitude);
+      applyForce(drag);
+    }
+
 }

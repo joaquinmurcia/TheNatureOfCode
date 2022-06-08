@@ -1,9 +1,5 @@
 class Fly extends Animal{
 
-  PVector mouse;
-  PVector dir;
-  float lim;
-
   Fly(float des, float m, float x, float y){
       super(des,m,5,x,y,new PVector(0,0),new PVector(0,0));
 
@@ -25,6 +21,12 @@ class Fly extends Animal{
         applyForce(forces.get(i));
       }
 
+  }
+
+  void display(){
+      stroke(0);
+      fill(0);
+      ellipse(location.x,location.y,10,10);
   }
 
 }

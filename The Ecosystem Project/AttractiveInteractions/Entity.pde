@@ -39,4 +39,22 @@ abstract class Entity{
       return force;
     }
 
+    PVector repel(Entity e){
+
+      PVector force = PVector.sub(location,e.location);
+
+      float distance = force.mag();
+      distance = constrain(distance,5,25);
+
+      float mag = (des*e.des)/(distance*distance);
+      /*If multiplied by -1, movers become repulsers.
+        If not, every mover will be an attractor for all others movers.*/
+      mag = (-1) * mag;
+
+      force.normalize();
+      force.mult(mag);
+
+      return force;
+    }
+
 }
